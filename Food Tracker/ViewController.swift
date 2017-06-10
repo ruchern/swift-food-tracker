@@ -4,7 +4,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     @IBOutlet weak var textMealName: UITextField!
     @IBOutlet weak var labelMealName: UILabel!
-    @IBOutlet weak var imagePhoto: UIImageView!
+    @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var ratingControl: RatingControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,16 +17,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    
-
-    @IBAction func btnSetDefaultLabelText(_ sender: UIButton) {
-        
-        labelMealName.text = "Default Text"
-    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         textMealName.resignFirstResponder()
         return true
     }
@@ -55,7 +48,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
         
-        imagePhoto.image = selectedImage
+        photoImageView.image = selectedImage
         
         dismiss(animated: true, completion: nil)
     }
