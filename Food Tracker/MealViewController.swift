@@ -14,9 +14,17 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         super.viewDidLoad()
         
         nameTextField.delegate = self
+        
+        if let meal = meal {
+            navigationItem.title = meal.name
+            nameTextField.text   = meal.name
+            photoImageView.image = meal.photo
+            ratingControl.rating = meal.rating
+        }
+        
         updateSaveButtonState()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -37,7 +45,15 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        let isPresentingAddMealMode = presentingViewController is UINavigationController
+        
+        if isPresentingAddMealMode {
+            dismiss(animated: true, completion: nil)
+        } else if let owningNavigationController = navigationController {
+            owningNavigationController.popViewController(animated: true)
+        } else {
+             fatalError("The MealViewController is not inside a navigation controller.")
+        }
     }
     
     
@@ -74,7 +90,7 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as?
             UIImage else {
-            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+                fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
         
         photoImageView.image = selectedImage
